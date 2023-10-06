@@ -48,40 +48,55 @@ fun HomeScreen(
         ){
             items(state.listamovies){
 
-               Column(
-                   modifier = Modifier
-                       .fillMaxSize()
-                       .padding(8.dp),
+                   item(it, { movieviewModel.onMovieClick(it) })
 
-               ) {
-                   Text(
-                       text = it.original_title,
-                       modifier = Modifier,
-                       fontSize = 16.sp,
-                       maxLines = 1
-                   )
-                   item(it)
-
-               }
             }
         }
     }
 }
 
 @Composable
-fun item(resultDto: ResultDto, ) {
+fun item(resultDto: ResultDto,onClick: () -> Unit) {
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(8.dp),
+
+        ) {
+        Text(
+            text = resultDto.original_title,
+            modifier = Modifier,
+            fontSize = 16.sp,
+            maxLines = 1
+        )
     Box {
         AsyncImage(
-            model = "https://image.tmdb.org/t/p/w500${ resultDto.poster_path }"  ,
-            contentDescription = resultDto.original_title)
-
-        Icon(
-            imageVector = Icons.Default.FavoriteBorder,
-            contentDescription = null,
-            modifier = Modifier
-                .align(Alignment.TopEnd)
-                .padding(4.dp),
-            tint = Color.Red
+            model = "https://image.tmdb.org/t/p/w500${resultDto.poster_path}",
+            contentDescription = resultDto.original_title
         )
+
+        if (resultDto.favorite){
+            Icon(
+                imageVector = Icons.Default.Favorite,
+                contentDescription = null,
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(4.dp)
+                    .clickable(onClick = onClick),
+                tint = Color.Red
+            )
+        }else{
+            Icon(
+                imageVector = Icons.Default.FavoriteBorder,
+                contentDescription = null,
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(4.dp)
+                    .clickable(onClick = onClick),
+                tint = Color.Red
+            )
+        }
+      }
     }
 }

@@ -29,4 +29,17 @@ class MovieViewModel(
             }
         }
     }
+
+
+    fun onMovieClick(resultDto: ResultDto) {
+        val movies = state.listamovies.toMutableList()
+        movies.replaceAll{
+            if (it.id == resultDto.id) resultDto.copy(favorite = !resultDto.favorite) else it }
+
+        state= state.copy(
+            listamovies = movies,
+            isFavorite = !state.isFavorite
+
+        )
+    }
 }
